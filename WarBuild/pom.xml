@@ -25,6 +25,66 @@
   				<failOnMissingWebXml>false</failOnMissingWebXml>
   			</configuration>
   		</plugin>
+  		<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<version>1.0.1-SNAPSHOT</version>								
+						<configuration>
+							<container>
+								<containerId>tomcat7x</containerId>
+								<type>remote</type>
+							</container>
+							<configuration>
+								<type>runtime</type>
+								<properties>
+									<cargo.tomcat.manager.url>http://localhost:9020/manager/html</cargo.tomcat.manager.url>
+									<cargo.remote.username>kaushik</cargo.remote.username>
+									<cargo.remote.password>kaushik</cargo.remote.password>
+								</properties>								
+							</configuration>	
+							<deployer>
+								<type>remote</type>
+								<deployables>
+									<deployable>	
+										<properties>
+											<context>xxx</context>
+										</properties>																	
+										<pingURL>http://localhost:9020/xxx</pingURL>
+									</deployable>
+								</deployables>
+							</deployer>										
+						</configuration>
+						<executions>
+							<execution>
+								<id>start-container</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>deployer-deploy</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-container</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>deployer-undeploy</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>verify-deploy</id>
+								<phase>install</phase>
+								<goals>
+									<goal>deployer-deploy</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>clean-undeploy</id>
+								<phase>pre-clean</phase>
+								<goals>
+									<goal>deployer-undeploy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
   	</plugins>
   </build>
   <dependencies>
